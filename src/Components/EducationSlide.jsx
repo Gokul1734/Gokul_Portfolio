@@ -25,7 +25,7 @@ const EducationSlide = (props) => {
           <h2>Internships</h2>
           <br />
           <p className=" text-justify px-5  self-center ">
-            Since 2025, I’ve been working as an intern at Technobite, a dynamic startup based in Bangalore, while also taking on freelance app development projects. This dual experience has given me a deep understanding of product-based application development and the ability to build scalable, efficient solutions from the ground up. Working closely with a startup team, I quickly adapted to the fast-paced environment, where daily Scrum calls taught me the value of clear communication and agile collaboration. These stand-up meetings were not just routine check-ins—they became a platform for feedback, ideation, and accountability, helping me align better with team goals and timelines.{" "}
+            Since 2025, I’ve interned at Technobite and worked as a freelance app developer, gaining hands-on experience in building scalable applications. Daily Scrum calls improved my agile collaboration and communication skills, while working with professionals sharpened my technical abilities and helped me deliver impactful, user-focused solutions efficiently.{" "}
           </p>
         </motion.div>
       );
