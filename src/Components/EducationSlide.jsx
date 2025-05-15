@@ -15,7 +15,7 @@ import { TbBinaryTree, TbMathIntegralX } from "react-icons/tb";
 
 const EducationSlide = (props) => {
   const [menu, setMenu] = useState("Profile");
-  const CGPA = 9.37;
+  const CGPA = 9.44;
 
   const M = (menu) => {
     console.log(menu);
@@ -25,12 +25,7 @@ const EducationSlide = (props) => {
           <h2>Internships</h2>
           <br />
           <p className=" text-justify px-5  self-center ">
-            I am actively seeking internships to gain hands-on experience in
-            software development and technology. With expertise in JavaScript,
-            Tailwind CSS, Firebase, and Python, I aim to contribute to
-            innovative projects, apply my skills, and learn from industry
-            professionals. My goal is to grow professionally while delivering
-            impactful, user-focused solutions.{" "}
+            Since 2025, I’ve been working as an intern at Technobite, a dynamic startup based in Bangalore, while also taking on freelance app development projects. This dual experience has given me a deep understanding of product-based application development and the ability to build scalable, efficient solutions from the ground up. Working closely with a startup team, I quickly adapted to the fast-paced environment, where daily Scrum calls taught me the value of clear communication and agile collaboration. These stand-up meetings were not just routine check-ins—they became a platform for feedback, ideation, and accountability, helping me align better with team goals and timelines.{" "}
           </p>
         </motion.div>
       );
