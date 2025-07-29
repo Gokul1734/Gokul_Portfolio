@@ -1,5 +1,5 @@
 import React from "react";
-import Resume from "../assets/Resume.pdf";
+import Resume from "../assets/Gokulpriyan-Resume.pdf";
 import { motion } from "motion/react";
 const Header = () => {
   return (

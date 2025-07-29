@@ -1,5 +1,6 @@
 import { Fragment, useState } from "react";
 import "./App.css";
+// import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import Header from "./Components/Header";
 import Media from "./Components/Media";
@@ -370,6 +371,7 @@ function App() {
       ) : (
         <Mobile />
       )}
+      {/* <SpeedInsights /> */}
     </>
   );
 }
