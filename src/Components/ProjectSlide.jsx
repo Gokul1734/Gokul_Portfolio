@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import react from "../assets/react.png";
 import tailwind from "../assets/tailwind.png";
 import js from "../assets/js.png";
@@ -10,75 +9,82 @@ import css from "../assets/css.png";
 import mongo from "../assets/mongo.png";
 import native from "../assets/native.png";
 
-const ProjectSlide = (props) => {
-  const [id, setid] = useState(props.id);
-  const [title, setTitle] = useState(props.title);
-  const [desc, setDesc] = useState(props.desc);
-  const [Image, setImage] = useState(props.img);
+const technologyIcons = {
+  react,
+  tw: tailwind,
+  js,
+  html,
+  firebase,
+  expo,
+  blockchain,
+  css,
+  mongo,
+  native,
+};
 
-  const svg = {
-    react: react,
-    tw: tailwind,
-    js: js,
-    html: html,
-    firebase: firebase,
-    expo: expo,
-    blockchain: blockchain,
-    css: css,
-    mongo: mongo,
-    native: native,
-  };
+const ProjectSlide = ({ project, number, onGameOpen }) => {
+  const projectId = project.id || `project-${number}`;
 
   return (
     <>
-      <input type="radio" name="slide" id={id} />
-      <label htmlFor={id} className="card">
+      <input type="radio" name="slide" id={projectId} />
+      <label htmlFor={projectId} className="card">
         <div className="row">
-          <h2>{title}</h2>
-          <div className="icon">{id}</div>
+          <h2>{project.title}</h2>
+          <div className="icon">{number}</div>
         </div>
         <div className="column">
           <div className="block4">
-            {props.tech.length == 4 ? (
-              props.tech.map((lang, index) => {
-                return <img src={svg[lang]} alt={`${lang}`} key={index} />;
-              })
-            ) : (
-              <></>
-            )}
+            {project.technologies?.map((technology, index) => {
+              const icon = technologyIcons[technology];
+              return icon ? (
+                <img
+                  src={icon}
+                  alt={technology}
+                  key={`${technology}-${index}`}
+                />
+              ) : (
+                <span className="project-tech-label" key={`${technology}-${index}`}>
+                  {technology}
+                </span>
+              );
+            })}
           </div>
           <div className="disp">
-            <img src={Image} alt="Pig Game" />
+            <img src={project.image} alt={`${project.title} preview`} />
           </div>
           <div className="sourcer">
             <button
-              onClick={(e) => {
-                if (title == "Javascript Games") {
-                  props.url[1](!props.url[0]);
-                } else if (props.url) {
-                  window.open(props.url, "_blank");
+              onClick={(event) => {
+                event.preventDefault();
+                if (project.showGames) {
+                  onGameOpen();
+                } else if (project.liveUrl) {
+                  window.open(project.liveUrl, "_blank", "noopener,noreferrer");
                 } else {
-                  alert("Project needs Setup use the Source Code for setup");
+                  window.alert("Project needs setup. Use the source code link.");
                 }
               }}
             >
               OPEN PROJECT
             </button>
             <button
-              onClick={() =>
-                window.open(
-                  `https://github.com${
-                    props.star ? props.star : ""
-                  }/Gokul1734/${props.gitlink}`,
-                  "_blank"
-                )
-              }
+              onClick={(event) => {
+                event.preventDefault();
+                if (project.sourceUrl) {
+                  window.open(
+                    project.sourceUrl,
+                    "_blank",
+                    "noopener,noreferrer"
+                  );
+                }
+              }}
             >
               SOURCE CODE
             </button>
           </div>
           <div className="description">
-            <p className=" text-wrap w-b ">{desc}</p>
+            <p className="text-wrap">{project.description}</p>
           </div>
         </div>
       </label>

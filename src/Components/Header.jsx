@@ -1,46 +1,55 @@
-import React from "react";
-import Resume from "../assets/Gokulpriyan-Resume.pdf";
 import { motion } from "motion/react";
-const Header = () => {
+import AdminTrigger from "./AdminTrigger";
+import { usePortfolio } from "../context/PortfolioContext";
+
+const Header = ({ onAdminOpen }) => {
+  const { portfolio } = usePortfolio();
+
   return (
-    <div className="w-a flex justify-between items-center h-24 rounded-full p-2 header">
-      <div className="w-full flex justify-between items-center bg-black h-20 p-4 rounded-full">
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className="bg-white rounded-full flex justify-between items-center"
-        >
-          <h1 className=" font-extrabold from-neutral-700 text-black text-5xl  flex items-center z-10">
-            G
-          </h1>
-        </motion.button>
-        <div className="flex gap-20 items-center">
-          <div className="link flex gap-10 justify-evenly items-center">
-            <a href="#">Home</a>
-            <a href="" onClick={() => window.open(Resume, "_blank")}>
+    <header className="site-header">
+      <div className="header-inner">
+        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+          <AdminTrigger
+            className="logo-button"
+            onAdminOpen={onAdminOpen}
+            onHome={() =>
+              document
+                .getElementById("home")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+          >
+            <h1>G</h1>
+          </AdminTrigger>
+        </motion.div>
+        <div className="header-actions">
+          <nav className="site-nav" aria-label="Main navigation">
+            <a href="#home">Home</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#education">Education</a>
+            <a href="#contact">Contact</a>
+            <a href={portfolio.links.resume} target="_blank" rel="noreferrer">
               Resume
             </a>
             <a
+              href={portfolio.links.certificates}
               target="_blank"
-              href="https://drive.google.com/drive/folders/1JZ_5bxCKXfsbHlhnaMqSpUTdOLnyw3Yv?usp=drive_link"
+              rel="noreferrer"
             >
               Certificates
             </a>
-            <div className="animation start-home"></div>
-          </div>
-          <motion.button
+          </nav>
+          <motion.a
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.8 }}
-            className="w-160 h-16 text-xl"
-            onClick={() => {
-              window.open("mailto:kgokulpriyan@gmail.com");
-            }}
+            className="hire-button"
+            href={`mailto:${portfolio.links.contactEmail}`}
           >
             HIRE ME
-          </motion.button>
+          </motion.a>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 

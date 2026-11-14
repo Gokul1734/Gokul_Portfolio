@@ -1,378 +1,195 @@
-import { Fragment, useState } from "react";
-import "./App.css";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-
-import Header from "./Components/Header";
-import Media from "./Components/Media";
-import Slider from "./Components/Slider";
-import ProgressBar from "@ramonak/react-progress-bar";
-import Skills from "./Components/Skills";
-
-import gamer from "./assets/gamer.jpg";
-import logistics from "./assets/Logistics.png";
-import movie from "./assets/MovieRecommendation.png";
-import bioheritage from "./assets/Eco.png";
-import parq from "./assets/Parq.png";
-import arbitrage from "./assets/Arbitrage.png";
-import blockborrow from "./assets/BlockBorrow.png";
-import ProjectSlide from "./Components/ProjectSlide";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import Popup from "./Components/Popup";
+import { useMediaQuery } from "react-responsive";
+import { BiUpArrowCircle } from "react-icons/bi";
+import ProgressBar from "@ramonak/react-progress-bar";
+import { SpeedInsights } from "@vercel/speed-insights/react";
+import "./App.css";
+import AdminPage from "./Components/AdminPage";
+import AmbientScene from "./Components/AmbientScene";
 import Bmw from "./Components/Bmw";
-import Form from "./Components/Form";
 import Coder from "./Components/Coder";
 import EducationSlide from "./Components/EducationSlide";
-import Name from "./Components/Name";
-import { useMediaQuery } from "react-responsive";
+import Form from "./Components/Form";
+import Header from "./Components/Header";
+import Media from "./Components/Media";
+import Popup from "./Components/Popup";
+import ProjectSlide from "./Components/ProjectSlide";
+import Skills from "./Components/Skills";
+import Slider from "./Components/Slider";
 import Mobile from "./Mobile";
-import { BiUpArrowCircle } from "react-icons/bi";
+import { usePortfolio } from "./context/PortfolioContext";
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
-  const isMobile = useMediaQuery({ query: "(min-width: 1000px)" });
+  const [isAdminOpen, setIsAdminOpen] = useState(
+    () => window.location.pathname === "/admin"
+  );
+  const { portfolio, dataError } = usePortfolio();
+  const isDesktop = useMediaQuery({ query: "(min-width: 1000px)" });
+
+  useEffect(() => {
+    const updateAdminRoute = () => {
+      setIsAdminOpen(window.location.pathname === "/admin");
+    };
+
+    window.addEventListener("popstate", updateAdminRoute);
+    return () => window.removeEventListener("popstate", updateAdminRoute);
+  }, []);
+
+  const openAdmin = () => {
+    window.history.pushState(null, "", "/admin");
+    setIsAdminOpen(true);
+  };
+
+  const closeAdmin = () => {
+    window.history.replaceState(null, "", "/");
+    setIsAdminOpen(false);
+  };
+
+  const openHome = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <>
-      {isMobile ? (
-        <Fragment>
-          <div className="h-full flex gap-40 justify-end w-full items-center mb-24 ">
-            <div className="flex flex-col gap-10 justify-center items-center w-full h-full">
-              <Header />
-              <div className="h-full flex flex-col gap-10 justify-center w-full items-center ">
+      <AmbientScene />
+      {isAdminOpen ? (
+        <AdminPage onClose={closeAdmin} />
+      ) : isDesktop ? (
+        <main className="portfolio">
+          <div className="hero-shell" id="home">
+            <div className="hero-content">
+              <Header onAdminOpen={openAdmin} />
+              <div className="hero-layout">
                 <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  className="img rounded-full w-244 h-244  items-center justify-center"
-                ></motion.div>
-                <div className="flex flex-col gap-7 justify-center items-center">
+                  whileHover={{ scale: 1.05 }}
+                  className="img hero-avatar rounded-full items-center justify-center"
+                  style={{
+                    backgroundImage: portfolio.hero.image
+                      ? `url("${portfolio.hero.image}")`
+                      : undefined,
+                  }}
+                  role="img"
+                  aria-label={portfolio.hero.name}
+                />
+                <div className="hero-copy">
                   <Bmw />
-                  <Name />
+                  <p className="hero-eyebrow">{portfolio.hero.eyebrow}</p>
+                  <h1 className="hero-name">{portfolio.hero.name}</h1>
+                  <p className="hero-intro">{portfolio.hero.intro}</p>
                   <motion.h2
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.8 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
                     id="carfade"
-                    style={{ zIndex: 2 }}
                     onClick={() => {
                       document.querySelector(".Carsvg").style.display = "flex";
-                      document
-                        .getElementById("carfade")
-                        .classList.add("active");
+                      document.getElementById("carfade").classList.add("active");
                       document
                         .getElementById("carfade")
                         .classList.remove("carfade");
                       document.getElementById("BMW").classList.add("play");
                       document.getElementById("carfade").style.zIndex = 0;
                     }}
-                    className="carfade text-5xl"
-                  >{``}</motion.h2>
+                    className="carfade"
+                  />
                 </div>
               </div>
             </div>
             <Media />
           </div>
           <Slider />
-          <h1 className="title align-middle justify-center flex text-7xl mt-20">
-            SKILLS
+          <h1 id="skills" className="title section-title mt-20">
+            {portfolio.sectionTitles.skills}
           </h1>
-          <div className="SkillTab w-full  flex items-center justify-center h-max p-0 ">
-            <div className="parent w-1/2 h-auto mt-10 p-20 ">
-              <Skills div={`1`} skill={`MongoDB`} />
-              <Skills div={`4`} skill={`Express`} />
-              <Skills div={`5`} skill={`React`} />
-              <Skills div={`10`} skill={`NodeJs`} />
-              <Skills div={`2`} skill={`Python`} />
-              <Skills div={`6`} skill={`Autocad`} />
-              <Skills div={`11`} skill={`Figma`} />
-              <Skills div={`8`} skill={`Pandas`} />
-              <Skills div={`9`} skill={`Android`} />
-              <Skills div={`3`} skill={`Expo`} />
-              <Skills div={`7`} skill={`Firebase`} />
-              <Skills div={`12`} skill={`Blender`} />
+          <div className="SkillTab skills-layout w-full flex items-center justify-center h-max p-0">
+            <div className="parent w-1/2 h-auto mt-10 p-20">
+              {portfolio.skills.map((skill, index) => (
+                <Skills
+                  key={`${skill.name}-${index}`}
+                  div={String(index + 1)}
+                  skill={skill.name}
+                  icon={skill.image}
+                />
+              ))}
             </div>
-            <div className="w-1/2 grid-container justify-center">
-              <div className="grid-item item1 ">
-                <section>
-                  <div>
-                    <label>HTML • CSS :</label>
-                  </div>
-                  <ProgressBar
-                    animateOnRender
-                    height={25}
-                    completed={90}
-                    bgColor="#5d4ebf"
-                  />
-                  <div>
-                    <label>REACT JS: {` 90%`}</label>
-                  </div>
-                  <ProgressBar
-                    animateOnRender
-                    bgColor={`#5d4ebf`}
-                    height={25}
-                    completed={90}
-                  />
-                </section>
-              </div>
-              <div className="grid-item item2">
-                <section>
-                  <div>
-                    <label>MICROSOFT DATA TOOLS: {` 70%`}</label>
-                  </div>
-                  <ProgressBar
-                    animateOnRender
-                    bgColor={`#5d4ebf`}
-                    height={25}
-                    completed={70}
-                    customLabel={`70%`}
-                  />
-                  <div>
-                    <label>DATABASE • MYSQL • FIREBASE: {` 80%`}</label>
-                  </div>
-                  <ProgressBar
-                    animateOnRender
-                    bgColor={`#5d4ebf`}
-                    height={25}
-                    completed={80}
-                    customLabel={`80%`}
-                  />
-                </section>
-              </div>
-              <div className="grid-item item4">
-                <section>
-                  <div>
-                    <label>MACHINE LEARNING: {` 75%`}</label>
-                  </div>
-                  <ProgressBar
-                    animateOnRender
-                    bgColor={`#5d4ebf`}
-                    height={25}
-                    completed={90}
-                    customLabel={`90%`}
-                  />
-                  <div>
-                    <label>AI • PROMPT : {` 60%`}</label>
-                  </div>
-                  <ProgressBar
-                    animateOnRender
-                    bgColor={`#5d4ebf`}
-                    height={25}
-                    completed={90}
-                    customLabel={`90%`}
-                  />
-                </section>
-              </div>
-              <div className="grid-item item3">
-                <section>
-                  <div>
-                    <label>PYTHON: {` 90%`}</label>
-                  </div>
-                  <ProgressBar
-                    color="red"
-                    animateOnRender
-                    bgColor={`#5d4ebf`}
-                    height={25}
-                    completed={90}
-                    customLabell={`90%`}
-                  />
-                  <div>
-                    <label>JAVA • C# • C++ : {` 75%`}</label>
-                  </div>
-                  <ProgressBar
-                    animateOnRender
-                    bgColor={`#5d4ebf`}
-                    height={25}
-                    completed={75}
-                    customLabell={` 75%`}
-                  />
-                </section>
-              </div>
-              <div className="grid-item item5">
-                <section>
-                  <div>
-                    <label>GITHUB: {` 90%`}</label>
-                  </div>
-                  <ProgressBar
-                    animateOnRender
-                    bgColor={`#5d4ebf`}
-                    height={25}
-                    completed={90}
-                    customLabel={`90%`}
-                  />
-                  <div>
-                    <label>VERCEL: {` 90%`}</label>
-                  </div>
-                  <ProgressBar
-                    animateOnRender
-                    bgColor={`#5d4ebf`}
-                    height={25}
-                    completed={90}
-                    customLabel={`90%`}
-                  />
-                </section>
-              </div>
-              <div className="grid-item item6">
-                <section>
-                  <div>
-                    <label>BLENDER: {` 60%`}</label>
-                  </div>
-                  <ProgressBar
-                    animateOnRender
-                    bgColor={`#5d4ebf`}
-                    height={25}
-                    completed={60}
-                    customLabel={`60%`}
-                  />
-                  <div>
-                    <label>AUTOCAD: {` 50%`}</label>
-                  </div>
-                  <ProgressBar
-                    animateOnRender
-                    bgColor={`#5d4ebf`}
-                    height={25}
-                    completed={50}
-                    customLabel={`50%`}
-                  />
-                </section>
-              </div>
-              <div className="grid-item item7">
-                <section>
-                  <div>
-                    <label>REACT - NATIVE: {` 75%`}</label>
-                  </div>
-                  <ProgressBar
-                    animateOnRender
-                    bgColor={`#5d4ebf`}
-                    height={25}
-                    completed={75}
-                    customLabel={`75%`}
-                  />
-                  <div>
-                    <label>FLUTTER: {` 70%`}</label>
-                  </div>
-                  <ProgressBar
-                    animateOnRender
-                    bgColor={`#5d4ebf`}
-                    height={25}
-                    completed={70}
-                    customLabel={`70%`}
-                  />
-                </section>
-              </div>
+            <div className="grid-container justify-center">
+              {portfolio.proficiency.map((skill, index) => (
+                <div className="grid-item" key={`${skill.label}-${index}`}>
+                  <section>
+                    <label>{skill.label}: {skill.value}%</label>
+                    <Progress value={skill.value} />
+                  </section>
+                </div>
+              ))}
             </div>
           </div>
-          <h1 className="title align-middle justify-center flex text-7xl">
-            PROJECTS
+          <h1 id="projects" className="title section-title">
+            {portfolio.sectionTitles.projects}
           </h1>
-          <div className="wrapper">
+          <div className="wrapper project-gallery">
             <div className="box">
-              <ProjectSlide
-                id="1"
-                title="Supply Chain Logistics"
-                desc="Supply Chain Management Web Application"
-                img={logistics}
-                tech={["js", "mongo", "react", "firebase"]}
-                url="https://logistics-ruby.vercel.app/login"
-                gitlink="Logistics"
-              />
-              <ProjectSlide
-                id="2"
-                title="PARQ"
-                img={parq}
-                desc="Online Parking Slot Booking Applicaiton"
-                tech={["native", "firebase", "react", "css"]}
-                url=""
-                gitlink="Parq"
-              />
-              <ProjectSlide
-                id="3"
-                title="Movie Recommadation"
-                img={movie}
-                desc="Movie Review Application with Advanced UI"
-                tech={["expo", "html", "react", "css"]}
-                url=""
-                gitlink="Movie-Review-React-Application"
-              />
-              <ProjectSlide
-                id="4"
-                title="Javascript Games"
-                img={gamer}
-                desc="Various Interactive Mini Games"
-                tech={["js", "html", "css", "tw"]}
-                url={[showPopup, setShowPopup]}
-                gitlink="lists/games"
-                star="/stars"
-              />
-              <ProjectSlide
-                id="5"
-                title="Bio-Heritage"
-                img={bioheritage}
-                desc="Blockchain Project providing Eco reward NFT's for Social Services"
-                tech={["blockchain", "firebase", "react", "html"]}
-                url="https://bio-heritage-iw348r9ne-adribvs-projects.vercel.app/#/"
-                gitlink="Bio-Heritage-BHT"
-              />
-              <ProjectSlide
-                id="6"
-                title="Arbitrage"
-                img={arbitrage}
-                desc="A peer to peer Lending Blockchain Web Application"
-                tech={["js", "html", "css", "firebase"]}
-                url="https://arbitragedev.netlify.app"
-                gitlink="Arbitrage"
-              />
-              <ProjectSlide
-                id="7"
-                title="Block-Borrow WEB3"
-                img={blockborrow}
-                desc="A peer to peer Lending Blockchain Web Application"
-                tech={["blockchain", "tw", "react", "firebase"]}
-                url=""
-                gitlink="goFlow"
-              />
+              {portfolio.projects.map((project, index) => (
+                <ProjectSlide
+                  key={project.id || `${project.title}-${index}`}
+                  project={project}
+                  number={index + 1}
+                  onGameOpen={() => setShowPopup(true)}
+                />
+              ))}
             </div>
           </div>
-          {showPopup ? <Popup status={[showPopup, setShowPopup]} /> : <></>}
-          <h1 className="title align-middle justify-center flex text-7xl">
-            EDUCATION AND EXPERIENCE
+          {showPopup && (
+            <Popup status={[showPopup, setShowPopup]} />
+          )}
+          <h1 id="education" className="title section-title">
+            {portfolio.sectionTitles.education}
           </h1>
-          <div className="education w-full h-dvh  flex justify-center items-start">
-            <div className="w-4/6 flex justify-center items-center m-20">
+          <div className="education w-full flex justify-center items-start">
+            <div className="w-4/6 flex justify-center items-center">
               <EducationSlide screen="" />
             </div>
-            <div className="testimonial w-3/6  flex flex-col justify-center items-start m-20">
-              <h2 className="text-5xl mb-10  ">Testimonial</h2>
-              <p className="para text-justify ">
-                I am a Computer Science and Engineering graduate from SRM
-                University with expertise in JavaScript, Tailwind CSS, Firebase,
-                and Python. I specialize in creating responsive, user-centric
-                web and application solutions, blending functionality with
-                aesthetics to deliver impactful results and exceed expectations
-                in web development and data analytics.
-              </p>
-              <br />
+            <div className="testimonial w-3/6 flex flex-col justify-center items-start">
+              <h2 className="text-5xl mb-10">Testimonial</h2>
+              <p className="para text-justify">{portfolio.testimonial}</p>
             </div>
           </div>
-          <h1 className="title align-middle justify-center flex text-7xl">
-            CONTACT
+          <h1 id="contact" className="title section-title">
+            {portfolio.sectionTitles.contact}
           </h1>
-          <div className="contact flex justify-between w-full m-20">
+          <div className="contact contact-layout flex justify-between w-full">
             <Form screen="" />
             <Coder />
           </div>
+          {dataError && (
+            <p className="portfolio-data-warning" role="status">
+              {dataError} Showing the original portfolio content.
+            </p>
+          )}
           <motion.button
-            onClick={() => {
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-              });
-            }}
+            onClick={openHome}
             className="top m-10 bg-none p-2 bg-primary text-black text-2xl opacity-60"
+            aria-label="Back to top"
           >
             <BiUpArrowCircle size={50} color="white" />
           </motion.button>
-        </Fragment>
+        </main>
       ) : (
-        <Mobile />
+        <Mobile onAdminOpen={openAdmin} />
       )}
       <SpeedInsights />
     </>
+  );
+}
+
+function Progress({ value }) {
+  return (
+    <ProgressBar
+      animateOnRender
+      height={25}
+      completed={Number(value)}
+      bgColor="#c3f56a"
+    />
   );
 }
 
