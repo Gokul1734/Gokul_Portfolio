@@ -22,18 +22,20 @@ const technologyIcons = {
   native,
 };
 
-const ProjectSlide = ({ project, number, onGameOpen }) => {
-  const projectId = project.id || `project-${number}`;
+const ProjectSlide = ({ project, onGameOpen }) => {
+  const projectId = project.id;
 
   return (
     <>
       <input type="radio" name="slide" id={projectId} />
-      <label htmlFor={projectId} className="card">
-        <div className="row">
-          <h2>{project.title}</h2>
-          <div className="icon">{number}</div>
-        </div>
+      <label htmlFor={projectId} className="card" aria-label={project.title}>
         <div className="column">
+          <div className="disp">
+            <img src={project.image} alt="" />
+          </div>
+          <div className="description">
+            <p className="text-wrap">{project.description}</p>
+          </div>
           <div className="block4">
             {project.technologies?.map((technology, index) => {
               const icon = technologyIcons[technology];
@@ -49,9 +51,6 @@ const ProjectSlide = ({ project, number, onGameOpen }) => {
                 </span>
               );
             })}
-          </div>
-          <div className="disp">
-            <img src={project.image} alt={`${project.title} preview`} />
           </div>
           <div className="sourcer">
             <button
@@ -82,9 +81,6 @@ const ProjectSlide = ({ project, number, onGameOpen }) => {
             >
               SOURCE CODE
             </button>
-          </div>
-          <div className="description">
-            <p className="text-wrap">{project.description}</p>
           </div>
         </div>
       </label>

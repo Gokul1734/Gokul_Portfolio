@@ -1,5 +1,4 @@
 import { motion } from "motion/react";
-import ProgressBar from "@ramonak/react-progress-bar";
 import { BiRightArrowCircle } from "react-icons/bi";
 import { FaGithub } from "react-icons/fa";
 import { BsTwitter } from "react-icons/bs";
@@ -69,37 +68,14 @@ const Mobile = ({ onAdminOpen }) => {
       <h1 id="skills" className="title section-title mt-20">
         {portfolio.sectionTitles.skills}
       </h1>
-      <section className="SkillTab flex-col h-max p-0">
-        <div className="parentMobile w-1/2 h-auto mt-10 p-10">
-          {portfolio.skills.map((skill, index) => (
-            <Skills
-              key={`${skill.name}-${index}`}
-              div={String(index + 1)}
-              screen="mobile"
-              skill={skill.name}
-              icon={skill.image}
-            />
-          ))}
-        </div>
-        <div className="flex flex-col grid-containerMobile justify-center my-0">
-          {portfolio.proficiency.map((skill, index) => (
-            <div className="grid-item" key={`${skill.label}-${index}`}>
-              <section>
-                <div className="my-3">
-                  <label>
-                    {skill.label}: {skill.value}%
-                  </label>
-                </div>
-                <ProgressBar
-                  animateOnRender
-                  height={25}
-                  completed={Number(skill.value)}
-                  bgColor="#c3f56a"
-                />
-              </section>
-            </div>
-          ))}
-        </div>
+      <p className="skills-intro">Core tools and self-rated proficiency</p>
+      <section
+        className="skills-board skills-board-mobile"
+        aria-label="Skills and ratings"
+      >
+        {portfolio.skills.map((skill, index) => (
+          <Skills key={`${skill.name}-${index}`} skill={skill} index={index} />
+        ))}
       </section>
       <h1 id="projects" className="title section-title mt-20">
         {portfolio.sectionTitles.projects}
@@ -131,10 +107,9 @@ const Mobile = ({ onAdminOpen }) => {
             <img
               className="rounded-md w-96 h-56"
               src={project.image}
-              alt={`${project.title} preview`}
+              alt=""
             />
             <div className="mobile-project-copy">
-              <h2>{project.title}</h2>
               <p>{project.description}</p>
               <div className="mobile-project-actions">
                 {project.liveUrl && (
@@ -179,7 +154,7 @@ const Mobile = ({ onAdminOpen }) => {
       <h1 id="contact" className="title section-title my-20">
         {portfolio.sectionTitles.contact}
       </h1>
-      <Form screen="mobile" />
+      <Form />
       <footer className="footer my-10 flex justify-evenly items-center gap-7">
         {socialLinks.map(({ key, Icon }) => (
           <a

@@ -19,7 +19,7 @@ const SideBar = ({ onAdminOpen }) => {
             </h1>
           </AdminTrigger>
         </motion.div>
-        <nav className="flex gap-5" aria-label="Portfolio documents">
+        <nav className="mobile-doc-links flex gap-5" aria-label="Portfolio links">
           <motion.a
             href={portfolio.links.resume}
             target="_blank"
@@ -39,6 +39,14 @@ const SideBar = ({ onAdminOpen }) => {
             className="text-xl mobileA p-2 rounded-full"
           >
             Certificates
+          </motion.a>
+          <motion.a
+            href={`mailto:${portfolio.links.contactEmail}`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="mobileA mobile-hire-button rounded-full"
+          >
+            HIRE ME
           </motion.a>
         </nav>
       </div>

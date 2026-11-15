@@ -2,13 +2,11 @@ import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { useMediaQuery } from "react-responsive";
 import { BiUpArrowCircle } from "react-icons/bi";
-import ProgressBar from "@ramonak/react-progress-bar";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import "./App.css";
 import AdminPage from "./Components/AdminPage";
 import AmbientScene from "./Components/AmbientScene";
 import Bmw from "./Components/Bmw";
-import Coder from "./Components/Coder";
 import EducationSlide from "./Components/EducationSlide";
 import Form from "./Components/Form";
 import Header from "./Components/Header";
@@ -102,38 +100,21 @@ function App() {
           <h1 id="skills" className="title section-title mt-20">
             {portfolio.sectionTitles.skills}
           </h1>
-          <div className="SkillTab skills-layout w-full flex items-center justify-center h-max p-0">
-            <div className="parent w-1/2 h-auto mt-10 p-20">
-              {portfolio.skills.map((skill, index) => (
-                <Skills
-                  key={`${skill.name}-${index}`}
-                  div={String(index + 1)}
-                  skill={skill.name}
-                  icon={skill.image}
-                />
-              ))}
-            </div>
-            <div className="grid-container justify-center">
-              {portfolio.proficiency.map((skill, index) => (
-                <div className="grid-item" key={`${skill.label}-${index}`}>
-                  <section>
-                    <label>{skill.label}: {skill.value}%</label>
-                    <Progress value={skill.value} />
-                  </section>
-                </div>
-              ))}
-            </div>
-          </div>
+          <p className="skills-intro">Core tools and self-rated proficiency</p>
+          <section className="skills-board" aria-label="Skills and ratings">
+            {portfolio.skills.map((skill, index) => (
+              <Skills key={`${skill.name}-${index}`} skill={skill} index={index} />
+            ))}
+          </section>
           <h1 id="projects" className="title section-title">
             {portfolio.sectionTitles.projects}
           </h1>
           <div className="wrapper project-gallery">
             <div className="box">
-              {portfolio.projects.map((project, index) => (
+              {portfolio.projects.map((project) => (
                 <ProjectSlide
-                  key={project.id || `${project.title}-${index}`}
+                  key={project.id}
                   project={project}
-                  number={index + 1}
                   onGameOpen={() => setShowPopup(true)}
                 />
               ))}
@@ -157,9 +138,8 @@ function App() {
           <h1 id="contact" className="title section-title">
             {portfolio.sectionTitles.contact}
           </h1>
-          <div className="contact contact-layout flex justify-between w-full">
-            <Form screen="" />
-            <Coder />
+          <div className="contact contact-layout">
+            <Form />
           </div>
           {dataError && (
             <p className="portfolio-data-warning" role="status">
@@ -179,17 +159,6 @@ function App() {
       )}
       <SpeedInsights />
     </>
-  );
-}
-
-function Progress({ value }) {
-  return (
-    <ProgressBar
-      animateOnRender
-      height={25}
-      completed={Number(value)}
-      bgColor="#c3f56a"
-    />
   );
 }
 

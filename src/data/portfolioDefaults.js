@@ -50,34 +50,18 @@ export const DEFAULT_PORTFOLIO = {
   testimonial:
     "I am a Computer Science and Engineering graduate from SRM University with expertise in JavaScript, Tailwind CSS, Firebase, and Python. I specialize in creating responsive, user-centric web and application solutions, blending functionality with aesthetics to deliver impactful results and exceed expectations in web development and data analytics.",
   skills: [
-    { name: "MongoDB", image: Mongo },
-    { name: "Express", image: Express },
-    { name: "React", image: ReactIcon },
-    { name: "NodeJs", image: Node },
-    { name: "Python", image: Python },
-    { name: "Autocad", image: Autocad },
-    { name: "Figma", image: Figma },
-    { name: "Pandas", image: Pandas },
-    { name: "Android", image: Android },
-    { name: "Expo", image: Expo },
-    { name: "Firebase", image: Firebase },
-    { name: "Blender", image: Blender },
-  ],
-  proficiency: [
-    { label: "HTML • CSS", value: 90 },
-    { label: "REACT JS", value: 90 },
-    { label: "MICROSOFT DATA TOOLS", value: 70 },
-    { label: "DATABASE • MYSQL • FIREBASE", value: 80 },
-    { label: "MACHINE LEARNING", value: 90 },
-    { label: "AI • PROMPT", value: 90 },
-    { label: "PYTHON", value: 90 },
-    { label: "JAVA • C# • C++", value: 75 },
-    { label: "GITHUB", value: 90 },
-    { label: "VERCEL", value: 90 },
-    { label: "BLENDER", value: 60 },
-    { label: "AUTOCAD", value: 50 },
-    { label: "REACT NATIVE", value: 75 },
-    { label: "FLUTTER", value: 70 },
+    { name: "MongoDB", image: Mongo, rating: 80 },
+    { name: "Express", image: Express, rating: 80 },
+    { name: "React", image: ReactIcon, rating: 90 },
+    { name: "NodeJs", image: Node, rating: 80 },
+    { name: "Python", image: Python, rating: 90 },
+    { name: "Autocad", image: Autocad, rating: 50 },
+    { name: "Figma", image: Figma, rating: 70 },
+    { name: "Pandas", image: Pandas, rating: 70 },
+    { name: "Android", image: Android, rating: 75 },
+    { name: "Expo", image: Expo, rating: 75 },
+    { name: "Firebase", image: Firebase, rating: 80 },
+    { name: "Blender", image: Blender, rating: 60 },
   ],
   marquee: ["SERVER", "WEBFLOW", "FULLSTACK", "DATABASE"],
   projects: [
@@ -194,6 +178,7 @@ export const copyPortfolio = (content = DEFAULT_PORTFOLIO) =>
 
 export const normalizePortfolioForStorage = (content) => {
   const saved = copyPortfolio(content);
+  delete saved.proficiency;
 
   if (saved.hero.image === DEFAULT_PORTFOLIO.hero.image) {
     delete saved.hero.image;
@@ -229,9 +214,12 @@ export const mergePortfolio = (remote) => {
   }
 
   const base = copyPortfolio();
+  const remoteContent = { ...remote };
+  delete remoteContent.proficiency;
+
   return {
     ...base,
-    ...remote,
+    ...remoteContent,
     hero: { ...base.hero, ...remote.hero },
     sectionTitles: { ...base.sectionTitles, ...remote.sectionTitles },
     links: {
@@ -257,9 +245,6 @@ export const mergePortfolio = (remote) => {
           return { ...defaultSkill, ...skill };
         })
       : base.skills,
-    proficiency: Array.isArray(remote.proficiency)
-      ? remote.proficiency
-      : base.proficiency,
     marquee: Array.isArray(remote.marquee) ? remote.marquee : base.marquee,
     projects: Array.isArray(remote.projects)
       ? remote.projects.map((project, index) => {

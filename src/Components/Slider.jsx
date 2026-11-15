@@ -8,24 +8,24 @@ import { usePortfolio } from "../context/PortfolioContext";
 
 const iconGroups = [
   <>
-    <FaNodeJs size={60} color="green" />
-    <SiExpress size={60} color="gray" />
-    <PiShareNetworkFill size={60} color="blue" />
+    <FaNodeJs aria-hidden="true" />
+    <SiExpress aria-hidden="true" />
+    <PiShareNetworkFill aria-hidden="true" />
   </>,
   <>
-    <LuFileJson size={60} color="white" />
-    <FaPython size={60} color="yellow" />
-    <PiFileCpp size={60} color="navy" />
+    <LuFileJson aria-hidden="true" />
+    <FaPython aria-hidden="true" />
+    <PiFileCpp aria-hidden="true" />
   </>,
   <>
-    <FaHtml5 size={60} color="red" />
-    <FaCss3 size={60} color="orange" />
-    <FaReact size={60} color="skyblue" />
+    <FaHtml5 aria-hidden="true" />
+    <FaCss3 aria-hidden="true" />
+    <FaReact aria-hidden="true" />
   </>,
   <>
-    <FaDatabase size={60} color="white" />
-    <SiMongodb size={60} color="green" />
-    <IoLogoFirebase size={60} color="yellow" />
+    <FaDatabase aria-hidden="true" />
+    <SiMongodb aria-hidden="true" />
+    <IoLogoFirebase aria-hidden="true" />
   </>,
 ];
 

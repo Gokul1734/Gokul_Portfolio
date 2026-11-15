@@ -7,8 +7,7 @@ import {
 } from "firebase/auth";
 import { httpsCallable } from "firebase/functions";
 import { ref, set } from "firebase/database";
-import { getDownloadURL, ref as storageRef, uploadBytes } from "firebase/storage";
-import { auth, functions, storage } from "../../firbase";
+import { auth, functions } from "../../firbase";
 import db from "../../firbase";
 import {
   copyPortfolio,
@@ -25,6 +24,32 @@ const updatePath = (setValue, path, value) => {
     return updated;
   });
 };
+
+const localRequest = async (route, options = {}) => {
+  const response = await fetch(`/__local_portfolio${route}`, {
+    credentials: "same-origin",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+  const result = await response.json();
+  if (!response.ok) {
+    throw Object.assign(new Error(result.error || "Local admin request failed."), {
+      status: response.status,
+    });
+  }
+  return result;
+};
+
+const readFileAsBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(",")[1]);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
 
 const Field = ({
   label,
@@ -54,24 +79,53 @@ const Field = ({
 );
 
 const AdminPage = ({ onClose }) => {
-  const { portfolio } = usePortfolio();
+  const { portfolio, replacePortfolio } = usePortfolio();
   const [user, setUser] = useState(null);
   const [draft, setDraft] = useState(() => copyPortfolio(portfolio));
   const [pin, setPin] = useState("");
   const [status, setStatus] = useState("");
   const [statusTone, setStatusTone] = useState("success");
   const [busy, setBusy] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
   const updateStatus = useCallback((message, tone = "success") => {
     setStatus(message);
     setStatusTone(tone);
   }, []);
 
   useEffect(() => {
+    if (import.meta.env.DEV) {
+      let active = true;
+      localRequest("/session")
+        .then(({ authenticated }) => {
+          if (!active) return;
+          setUser(
+            authenticated
+              ? { uid: "local-dev-admin", email: "Local development", isLocal: true }
+              : null
+          );
+          setAuthLoading(false);
+        })
+        .catch((error) => {
+          console.error("Could not check the local admin session.", error);
+          if (!active) return;
+          setAuthLoading(false);
+          updateStatus(
+            "Restart the local Vite server to enable the file-based editor.",
+            "error"
+          );
+        });
+
+      return () => {
+        active = false;
+      };
+    }
+
     let active = true;
     const unsubscribe = onAuthStateChanged(auth, async (nextUser) => {
       if (!active) return;
       if (!nextUser) {
         setUser(null);
+        setAuthLoading(false);
         return;
       }
 
@@ -82,16 +136,19 @@ const AdminPage = ({ onClose }) => {
           await signOut(auth);
           if (!active) return;
           setUser(null);
+          setAuthLoading(false);
           updateStatus("This account is not authorized to edit the portfolio.", "error");
           return;
         }
 
         setUser(nextUser);
+        setAuthLoading(false);
         updateStatus("");
       } catch (error) {
         console.error("Could not verify the admin session.", error);
         if (active) {
           setUser(null);
+          setAuthLoading(false);
           updateStatus("The admin session could not be verified.", "error");
         }
       }
@@ -112,12 +169,40 @@ const AdminPage = ({ onClose }) => {
     updateStatus("");
     setBusy(true);
     try {
+      if (import.meta.env.DEV) {
+        await localRequest("/login", {
+          method: "POST",
+          body: JSON.stringify({ pin }),
+        });
+        setUser({
+          uid: "local-dev-admin",
+          email: "Local development",
+          isLocal: true,
+        });
+        setPin("");
+        return;
+      }
+
       const requestPinLogin = httpsCallable(functions, "portfolioPinLogin");
       const result = await requestPinLogin({ pin });
       await signInWithCustomToken(auth, result.data.token);
       setPin("");
     } catch (error) {
       console.error("Admin PIN sign-in failed.", error);
+      if (import.meta.env.DEV) {
+        updateStatus(
+          error.status === 503
+            ? "Local PIN is not configured. Set PORTFOLIO_ADMIN_PIN in .env.local and restart Vite."
+            : error.status === 429
+              ? error.message
+              : error.status === 401
+                ? "That local development PIN is incorrect."
+                : "Could not reach the local editor. Restart npm run dev.",
+          "error"
+        );
+        return;
+      }
+
       switch (error.code) {
         case "functions/not-found":
         case "functions/unavailable":
@@ -147,6 +232,17 @@ const AdminPage = ({ onClose }) => {
     setBusy(true);
     updateStatus("");
     try {
+      if (user?.isLocal) {
+        const content = normalizePortfolioForStorage(draft);
+        await localRequest("/content", {
+          method: "PUT",
+          body: JSON.stringify(content),
+        });
+        replacePortfolio(content);
+        updateStatus("Saved to portfolio-data/content.json.");
+        return;
+      }
+
       await set(
         ref(db, "portfolio/content"),
         normalizePortfolioForStorage(draft)
@@ -165,6 +261,13 @@ const AdminPage = ({ onClose }) => {
 
   const handleSignOut = async () => {
     try {
+      if (user?.isLocal) {
+        await localRequest("/logout", { method: "POST", body: "{}" });
+        setUser(null);
+        updateStatus("");
+        return;
+      }
+
       await signOut(auth);
       updateStatus("");
     } catch (error) {
@@ -186,22 +289,28 @@ const AdminPage = ({ onClose }) => {
       return;
     }
 
+    if (!user?.isLocal) {
+      updateStatus(
+        "Upload images from the local editor to save them in public/uploads, then deploy the project.",
+        "error"
+      );
+      return;
+    }
+
     setBusy(true);
     updateStatus("");
     try {
-      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
-      const imageRef = storageRef(
-        storage,
-        `portfolio/${user.uid}/${Date.now()}-${safeName}`
-      );
-      await uploadBytes(imageRef, file, { contentType: file.type });
-      const url = await getDownloadURL(imageRef);
-      updatePath(setDraft, path, url);
-      updateStatus("Image uploaded. Save changes to publish it.");
+      const data = await readFileAsBase64(file);
+      const result = await localRequest("/media", {
+        method: "POST",
+        body: JSON.stringify({ type: file.type, data }),
+      });
+      updatePath(setDraft, path, result.url);
+      updateStatus("Image added to public/uploads. Save changes to publish it.");
     } catch (error) {
       console.error("Could not upload portfolio image.", error);
       updateStatus(
-        "Image upload failed. Confirm the Firebase Storage rules are deployed.",
+        "Image upload failed. Restart the local Vite editor and try again.",
         "error"
       );
     } finally {
@@ -214,15 +323,8 @@ const AdminPage = ({ onClose }) => {
   const changeSkill = (index, key, value) => {
     setDraft((current) => {
       const updated = copyPortfolio(current);
-      updated.skills[index][key] = value;
-      return updated;
-    });
-  };
-
-  const changeProficiency = (index, key, value) => {
-    setDraft((current) => {
-      const updated = copyPortfolio(current);
-      updated.proficiency[index][key] = key === "value" ? Number(value) : value;
+      updated.skills[index][key] =
+        key === "rating" ? Number(value) : value;
       return updated;
     });
   };
@@ -263,6 +365,18 @@ const AdminPage = ({ onClose }) => {
       showGames: false,
     });
   };
+
+  if (authLoading) {
+    return (
+      <main className="admin-page">
+        <section className="admin-login">
+          <span className="admin-kicker">PRIVATE AREA</span>
+          <h1>Portfolio editor</h1>
+          <p>Checking the local admin session...</p>
+        </section>
+      </main>
+    );
+  }
 
   if (!user) {
     return (
@@ -383,7 +497,9 @@ const AdminPage = ({ onClose }) => {
           <button
             className="admin-secondary"
             type="button"
-            onClick={() => addItem("skills", { name: "New skill", image: "" })}
+            onClick={() =>
+              addItem("skills", { name: "New skill", image: "", rating: 65 })
+            }
           >
             Add skill
           </button>
@@ -392,34 +508,20 @@ const AdminPage = ({ onClose }) => {
           {draft.skills.map((skill, index) => (
             <div className="admin-list-row" key={`skill-${index}`}>
               <Field label="Skill" value={skill.name} onChange={(value) => changeSkill(index, "name", value)} />
+              <Field
+                label="Rating (0–100)"
+                type="number"
+                value={skill.rating ?? 65}
+                onChange={(value) =>
+                  changeSkill(index, "rating", Math.max(0, Math.min(100, Number(value))))
+                }
+              />
               <Field label="Icon URL" value={skill.image} onChange={(value) => changeSkill(index, "image", value)} />
               <label className="admin-upload">
                 Upload icon
                 <input type="file" accept="image/*" onChange={(event) => uploadImage(event, ["skills", index, "image"])} />
               </label>
               <button className="admin-danger" type="button" onClick={() => removeItem("skills", index)}>Remove</button>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="admin-panel">
-        <div className="admin-panel-heading">
-          <h2>Proficiency</h2>
-          <button
-            className="admin-secondary"
-            type="button"
-            onClick={() => addItem("proficiency", { label: "New skill", value: 50 })}
-          >
-            Add proficiency
-          </button>
-        </div>
-        <div className="admin-list">
-          {draft.proficiency.map((skill, index) => (
-            <div className="admin-list-row" key={`proficiency-${index}`}>
-              <Field label="Label" value={skill.label} onChange={(value) => changeProficiency(index, "label", value)} />
-              <Field label="Level (0–100)" type="number" value={skill.value} onChange={(value) => changeProficiency(index, "value", Math.max(0, Math.min(100, Number(value))))} />
-              <button className="admin-danger" type="button" onClick={() => removeItem("proficiency", index)}>Remove</button>
             </div>
           ))}
         </div>

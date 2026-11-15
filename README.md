@@ -9,38 +9,64 @@ npm run dev
 
 ## Owner content editor
 
-Tap the `G` logo five times quickly to open `/admin`. The shortcut only opens
-the editor. A Firebase callable function verifies the PIN and issues a custom
-admin session; database and storage rules accept only that session.
+Tap the `G` logo five times quickly to open `/admin`.
 
-1. Enable Firebase Authentication for the project configured in `firbase.js`.
-   Email/Password sign-in is not required.
-2. Install the Firebase CLI, sign in, and set the PIN as a Firebase secret:
+### Local development
 
-   ```sh
-   firebase functions:secrets:set ADMIN_PIN --project core-falcon-416215
-   ```
+The local admin uses a development-only server endpoint. It stores editable
+content in `portfolio-data/content.json` and uploaded images in `public/uploads/`.
+These files are part of the project, so you can version them and include them
+in a later site build. The local endpoint only runs under Vite's development
+server, which binds to `127.0.0.1`.
 
-   Enter the PIN at the prompt; do not put it in source code or a committed
-   environment file. A longer random PIN is safer than a short numeric one.
-3. Install function dependencies and deploy the callable function and rules:
+Set `PORTFOLIO_ADMIN_PIN` in the ignored `.env.local` file, then restart Vite:
 
-   ```sh
-   npm install --prefix functions
-   firebase deploy --only functions,database,storage --project core-falcon-416215
-   ```
+```env
+PORTFOLIO_ADMIN_PIN=choose-a-local-pin
+```
 
-   Cloud Functions deployment may require the Firebase project to use the
-   Blaze billing plan.
-4. Open `/admin`, enter the PIN, edit the content, and select **Save changes**.
+Open `/admin`, sign in with that local PIN, and save. This local PIN is not used
+by the deployed website.
 
-The PIN endpoint allows five attempts per IP per 15-minute window. Attempts are
-stored as hashed IP identifiers in Realtime Database.
+### Free project-folder media
 
-The editor manages the introduction, section headings, links, skills,
-proficiency, projects, thumbnails, education/profile details, testimonial, and
-marquee labels. Image uploads are limited to 5 MB. Until content is saved to
-Realtime Database at `/portfolio/content`, the site uses its bundled defaults.
+Use the local editor to upload images. It saves files under `public/uploads/`
+and updates `portfolio-data/content.json`; Vite serves them at `/uploads/...`.
+Commit those files and push to GitHub so Vercel can include them in the next
+static build. The deployed site can display these files, but cannot write new
+files into its project folder at runtime.
+
+The deployed editor's image fields accept `/uploads/your-file.png` URLs. Its
+upload buttons direct you to use the local editor instead of Firebase Storage.
+
+### Deployed website
+
+Static site folders cannot be written by a visitor's browser after deployment.
+The deployed editor therefore uses Firebase Authentication custom tokens from
+the callable function and writes to Firebase Realtime Database. Firebase
+Storage is not used. Set a separate, strong PIN as a Firebase secret and deploy
+the function and database rules:
+
+```sh
+firebase functions:secrets:set ADMIN_PIN --project core-falcon-416215
+npm install --prefix functions
+firebase deploy --only functions,database --project core-falcon-416215
+```
+
+Cloud Functions deployment may require the Firebase project to use the Blaze
+billing plan. The callable endpoint allows five attempts per IP per 15-minute
+window. The deployed PIN must be set as a Firebase secret; the local `.env.local`
+PIN is never bundled into production.
+
+The contact form and optional live portfolio content still use Realtime
+Database. Reactivate that database in Firebase Console if it is deactivated;
+this is separate from project-folder media.
+
+The editor manages the introduction, section headings, links, skills and their
+individual ratings, projects, thumbnails, education/profile details,
+testimonial, and marquee labels. Image uploads are limited to 5 MB. Until content is saved to
+Realtime Database at `/portfolio/content`, the site uses its bundled defaults
+and any content committed in `portfolio-data/content.json`.
 
 The website's public portfolio content and uploaded images are readable by
 visitors. Do not put private information in those fields. The existing contact

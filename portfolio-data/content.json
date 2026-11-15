@@ -1,0 +1,250 @@
+{
+  "hero": {
+    "name": "Gokulpriyan Karthikeyan",
+    "eyebrow": "SOFTWARE DEVELOPER · CHENNAI, INDIA",
+    "intro": "I build responsive, user-focused web and mobile applications, blending thoughtful design with reliable engineering.",
+    "image": "/uploads/160549ce-e584-4652-b4b8-7abde3e891bc.png"
+  },
+  "sectionTitles": {
+    "skills": "SKILLS",
+    "projects": "PROJECTS",
+    "education": "EDUCATION AND EXPERIENCE",
+    "contact": "CONTACT"
+  },
+  "links": {
+    "contactEmail": "kgokulpriyan@gmail.com",
+    "certificates": "https://drive.google.com/drive/folders/1JZ_5bxCKXfsbHlhnaMqSpUTdOLnyw3Yv?usp=drive_link",
+    "social": {
+      "x": "https://x.com/kgokulpriyan1",
+      "instagram": "https://www.instagram.com/Gokulpriyan_Karthikeyan/",
+      "github": "https://github.com/Gokul1734",
+      "linkedin": "https://www.linkedin.com/in/gokulpriyan-karthikeyan-078652200/"
+    }
+  },
+  "testimonial": "I am a Computer Science and Engineering graduate from SRM University with expertise in JavaScript, Tailwind CSS, Firebase, and Python. I specialize in creating responsive, user-centric web and application solutions, blending functionality with aesthetics to deliver impactful results and exceed expectations in web development and data analytics.",
+  "skills": [
+    {
+      "name": "MongoDB"
+    },
+    {
+      "name": "Express"
+    },
+    {
+      "name": "React"
+    },
+    {
+      "name": "NodeJs"
+    },
+    {
+      "name": "Python"
+    },
+    {
+      "name": "Autocad"
+    },
+    {
+      "name": "Figma"
+    },
+    {
+      "name": "Pandas"
+    },
+    {
+      "name": "Android"
+    },
+    {
+      "name": "Expo"
+    },
+    {
+      "name": "Firebase"
+    },
+    {
+      "name": "Blender"
+    }
+  ],
+  "proficiency": [
+    {
+      "label": "HTML • CSS",
+      "value": 90
+    },
+    {
+      "label": "REACT JS",
+      "value": 90
+    },
+    {
+      "label": "MICROSOFT DATA TOOLS",
+      "value": 70
+    },
+    {
+      "label": "DATABASE • MYSQL • FIREBASE",
+      "value": 80
+    },
+    {
+      "label": "MACHINE LEARNING",
+      "value": 90
+    },
+    {
+      "label": "AI • PROMPT",
+      "value": 90
+    },
+    {
+      "label": "PYTHON",
+      "value": 90
+    },
+    {
+      "label": "JAVA • C# • C++",
+      "value": 75
+    },
+    {
+      "label": "GITHUB",
+      "value": 90
+    },
+    {
+      "label": "VERCEL",
+      "value": 90
+    },
+    {
+      "label": "BLENDER",
+      "value": 60
+    },
+    {
+      "label": "AUTOCAD",
+      "value": 50
+    },
+    {
+      "label": "REACT NATIVE",
+      "value": 75
+    },
+    {
+      "label": "FLUTTER",
+      "value": 70
+    }
+  ],
+  "marquee": [
+    "SERVER",
+    "WEBFLOW",
+    "FULLSTACK",
+    "DATABASE"
+  ],
+  "projects": [
+    {
+      "id": "supply-chain-logistics",
+      "title": "Supply Chain Logistics",
+      "description": "Supply Chain Management Web Application",
+      "image": "/uploads/60c6d19a-e11d-4626-a20d-17e07858a64f.png",
+      "technologies": [
+        "js",
+        "mongo",
+        "react",
+        "firebase"
+      ],
+      "liveUrl": "https://logistics-ruby.vercel.app/login",
+      "sourceUrl": "https://github.com/Gokul1734/Logistics",
+      "showGames": false
+    },
+    {
+      "id": "parq",
+      "title": "PARQ",
+      "description": "Online Parking Slot Booking Applicaiton",
+      "image": "/uploads/a90fe51a-fa3e-491e-9a89-719462d7c622.png",
+      "technologies": [
+        "native",
+        "firebase",
+        "react",
+        "css"
+      ],
+      "liveUrl": "",
+      "sourceUrl": "https://github.com/Gokul1734/Parq",
+      "showGames": false
+    },
+    {
+      "id": "movie-recommendation",
+      "title": "Movie Recommadation",
+      "description": "Movie Review Application with Advanced UI",
+      "image": "/uploads/83e8fdb2-f2ed-4309-a12a-b5a40cf86277.png",
+      "technologies": [
+        "expo",
+        "html",
+        "react",
+        "css"
+      ],
+      "liveUrl": "",
+      "sourceUrl": "https://github.com/Gokul1734/Movie-Review-React-Application",
+      "showGames": false
+    },
+    {
+      "id": "javascript-games",
+      "title": "Javascript Games",
+      "description": "Various Interactive Mini Games",
+      "image": "/uploads/7984770b-3166-4e42-bbea-c14a9aa720c9.png",
+      "technologies": [
+        "js",
+        "html",
+        "css",
+        "tw"
+      ],
+      "liveUrl": "",
+      "sourceUrl": "https://github.com/stars/Gokul1734/lists/games",
+      "showGames": true
+    },
+    {
+      "id": "bio-heritage",
+      "title": "Bio-Heritage",
+      "description": "Blockchain Project providing Eco reward NFT's for Social Services",
+      "image": "/uploads/568f4fdb-ee3f-4c0b-ba67-1b3f686590da.png",
+      "technologies": [
+        "blockchain",
+        "firebase",
+        "react",
+        "html"
+      ],
+      "liveUrl": "https://bio-heritage-iw348r9ne-adribvs-projects.vercel.app/#/",
+      "sourceUrl": "https://github.com/Gokul1734/Bio-Heritage-BHT",
+      "showGames": false
+    },
+    {
+      "id": "arbitrage",
+      "title": "Arbitrage",
+      "description": "A peer to peer Lending Blockchain Web Application",
+      "image": "/uploads/52e0d5d2-2885-408c-83c4-a76033d414c5.png",
+      "technologies": [
+        "js",
+        "html",
+        "css",
+        "firebase"
+      ],
+      "liveUrl": "https://arbitragedev.netlify.app",
+      "sourceUrl": "https://github.com/Gokul1734/Arbitrage",
+      "showGames": false
+    }
+  ],
+  "education": {
+    "internship": "Since 2025, I’ve interned at Technobite and worked as a freelance app developer, gaining hands-on experience in building scalable applications. Daily Scrum calls improved my agile collaboration and communication skills, while working with professionals sharpened my technical abilities and helped me deliver impactful, user-focused solutions efficiently.",
+    "university": {
+      "title": "SRM University",
+      "cgpa": "9.44",
+      "highlights": [
+        "Developed a strong foundation in Technology",
+        "Learned Web Development and Designing",
+        "Explored Problem Solving and Data Analytics"
+      ]
+    },
+    "school": {
+      "title": "DAV School",
+      "twelfth": "88%",
+      "tenth": "89%",
+      "highlights": [
+        "Understanding Basic Science Concepts",
+        "Gained Complex Mathematical Knowledge",
+        "Understanding Computer Languages"
+      ]
+    },
+    "profile": {
+      "name": "Gokulpriyan Karthikeyan",
+      "birthDate": "17/03/2004",
+      "phone": "7010871355",
+      "languages": "Tamil, English",
+      "email": "kgokulpriyan@gmail.com",
+      "gender": "Male",
+      "location": "Chennai, India"
+    }
+  }
+}
