@@ -37,7 +37,10 @@ const Mobile = ({ onAdminOpen }) => {
   return (
     <main className="body w-screen flex flex-col justify-center items-center h-full">
       <SideBar onAdminOpen={onAdminOpen} />
-      <section className="h-full flex flex-col justify-center w-full items-center">
+      <section
+        id="home"
+        className="h-full flex flex-col justify-center w-full items-center"
+      >
         <motion.div
           whileHover={{ scale: 1.05 }}
           className="img hero-avatar rounded-full w-244 h-244 items-center justify-center"
