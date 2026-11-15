@@ -376,6 +376,7 @@ const AdminPage = ({ onClose }) => {
         description: "",
         image: "",
         technologies: [],
+        tags: [],
         liveUrl: "",
         sourceUrl: "",
         showGames: false,
@@ -579,6 +580,17 @@ const AdminPage = ({ onClose }) => {
                   label="Technology icon keys (comma-separated)"
                   value={(Array.isArray(project.technologies) ? project.technologies : []).join(", ")}
                   onChange={(value) => changeProject(index, "technologies", value.split(",").map((item) => item.trim()).filter(Boolean))}
+                />
+                <Field
+                  label="Tags (comma-separated, e.g. Vibe coded by Lovable)"
+                  value={(Array.isArray(project.tags) ? project.tags : []).join(", ")}
+                  onChange={(value) =>
+                    changeProject(
+                      index,
+                      "tags",
+                      value.split(",").map((tag) => tag.trim()).filter(Boolean)
+                    )
+                  }
                 />
               </div>
               <label className="admin-upload">

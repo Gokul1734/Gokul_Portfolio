@@ -99,41 +99,58 @@ const Mobile = ({ onAdminOpen }) => {
             <BiRightArrowCircle className="mt-1" size={50} />
           </motion.button>
         </h2>
-        {portfolio.projects.map((project, index) => (
-          <article
-            className="mobileCard"
-            key={project.id || `${project.title}-${index}`}
-          >
-            <img
-              className="rounded-md w-96 h-56"
-              src={project.image}
-              alt=""
-            />
-            <div className="mobile-project-copy">
-              <p>{project.description}</p>
-              <div className="mobile-project-actions">
-                {project.liveUrl && (
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Live project
-                  </a>
+        {portfolio.projects.map((project, index) => {
+          const projectTags = Array.isArray(project.tags)
+            ? project.tags.filter(
+                (tag) => typeof tag === "string" && tag.trim()
+              )
+            : [];
+
+          return (
+            <article
+              className="mobileCard"
+              key={project.id || `${project.title}-${index}`}
+            >
+              <img
+                className="rounded-md w-96 h-56"
+                src={project.image}
+                alt=""
+              />
+              <div className="mobile-project-copy">
+                <p>{project.description}</p>
+                {projectTags.length > 0 && (
+                  <div className="mobile-project-tags" aria-label="Project tags">
+                    {projectTags.map((tag, tagIndex) => (
+                      <span className="project-tag" key={`${tag}-${tagIndex}`}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 )}
-                {project.sourceUrl && (
-                  <a
-                    href={project.sourceUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Source code
-                  </a>
-                )}
+                <div className="mobile-project-actions">
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Live project
+                    </a>
+                  )}
+                  {project.sourceUrl && (
+                    <a
+                      href={project.sourceUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Source code
+                    </a>
+                  )}
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
+            </article>
+          );
+        })}
         <a
           className="mobile-github-link"
           href={portfolio.links.social.github}

@@ -24,6 +24,9 @@ const technologyIcons = {
 
 const ProjectSlide = ({ project, onGameOpen }) => {
   const projectId = project.id;
+  const projectTags = Array.isArray(project.tags)
+    ? project.tags.filter((tag) => typeof tag === "string" && tag.trim())
+    : [];
 
   return (
     <>
@@ -36,6 +39,15 @@ const ProjectSlide = ({ project, onGameOpen }) => {
           <div className="description">
             <p className="text-wrap">{project.description}</p>
           </div>
+          {projectTags.length > 0 && (
+            <div className="project-tags" aria-label="Project tags">
+              {projectTags.map((tag, index) => (
+                <span className="project-tag" key={`${tag}-${index}`}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
           <div className="block4">
             {project.technologies?.map((technology, index) => {
               const icon = technologyIcons[technology];
