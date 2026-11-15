@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { BiPlus } from "react-icons/bi";
 import {
   getIdTokenResult,
   onAuthStateChanged,
@@ -85,8 +86,10 @@ const AdminPage = ({ onClose }) => {
   const [pin, setPin] = useState("");
   const [status, setStatus] = useState("");
   const [statusTone, setStatusTone] = useState("success");
+  const [focusProjectId, setFocusProjectId] = useState(null);
   const [busy, setBusy] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
+  const projectCards = useRef(new Map());
   const updateStatus = useCallback((message, tone = "success") => {
     setStatus(message);
     setStatusTone(tone);
@@ -163,6 +166,16 @@ const AdminPage = ({ onClose }) => {
   useEffect(() => {
     if (!user) setDraft(copyPortfolio(portfolio));
   }, [portfolio, user]);
+
+  useEffect(() => {
+    if (!focusProjectId) return;
+    const projectCard = projectCards.current.get(focusProjectId);
+    if (!projectCard) return;
+
+    projectCard.scrollIntoView({ behavior: "smooth", block: "center" });
+    projectCard.querySelector("input")?.focus({ preventScroll: true });
+    setFocusProjectId(null);
+  }, [draft.projects.length, focusProjectId]);
 
   const handleSignIn = async (event) => {
     event.preventDefault();
@@ -354,16 +367,23 @@ const AdminPage = ({ onClose }) => {
   };
 
   const addProject = () => {
-    addItem("projects", {
-      id: `project-${Date.now()}`,
-      title: "New project",
-      description: "",
-      image: "",
-      technologies: [],
-      liveUrl: "",
-      sourceUrl: "",
-      showGames: false,
+    const id = `project-${crypto.randomUUID()}`;
+    setDraft((current) => {
+      const updated = copyPortfolio(current);
+      updated.projects.push({
+        id,
+        title: "New project",
+        description: "",
+        image: "",
+        technologies: [],
+        liveUrl: "",
+        sourceUrl: "",
+        showGames: false,
+      });
+      return updated;
     });
+    setFocusProjectId(id);
+    updateStatus("New project added. Save changes to publish it.");
   };
 
   if (authLoading) {
@@ -530,11 +550,21 @@ const AdminPage = ({ onClose }) => {
       <section className="admin-panel">
         <div className="admin-panel-heading">
           <h2>Projects</h2>
-          <button className="admin-secondary" type="button" onClick={addProject}>Add project</button>
+          <button className="admin-primary admin-add-project" type="button" onClick={addProject}>
+            <BiPlus aria-hidden="true" />
+            Add new project
+          </button>
         </div>
         <div className="admin-list">
           {draft.projects.map((project, index) => (
-            <article className="admin-project" key={project.id || `project-${index}`}>
+            <article
+              className="admin-project"
+              key={project.id || `project-${index}`}
+              ref={(element) => {
+                if (element && project.id) projectCards.current.set(project.id, element);
+                else projectCards.current.delete(project.id);
+              }}
+            >
               <div className="admin-panel-heading">
                 <h3>{project.title || "Untitled project"}</h3>
                 <button className="admin-danger" type="button" onClick={() => removeItem("projects", index)}>Remove project</button>
@@ -566,6 +596,14 @@ const AdminPage = ({ onClose }) => {
             </article>
           ))}
         </div>
+        <button
+          className="admin-secondary admin-add-project-bottom"
+          type="button"
+          onClick={addProject}
+        >
+          <BiPlus aria-hidden="true" />
+          Add another project
+        </button>
       </section>
 
       <section className="admin-panel">

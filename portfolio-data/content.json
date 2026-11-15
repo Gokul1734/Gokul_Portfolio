@@ -13,7 +13,8 @@
   },
   "links": {
     "contactEmail": "kgokulpriyan@gmail.com",
-    "certificates": "https://drive.google.com/drive/folders/1JZ_5bxCKXfsbHlhnaMqSpUTdOLnyw3Yv?usp=drive_link",
+    "resume": "https://drive.google.com/file/d/1Ol4luvJE7RBZEIfxVrnwV-YCtZtpao_V/view?usp=sharing",
+    "certificates": "https://drive.google.com/drive/folders/1SLma7mOmuSr4JlEuGQqt6-qvTzOw8-IL?usp=sharing",
     "social": {
       "x": "https://x.com/kgokulpriyan1",
       "instagram": "https://www.instagram.com/Gokulpriyan_Karthikeyan/",
@@ -24,98 +25,52 @@
   "testimonial": "I am a Computer Science and Engineering graduate from SRM University with expertise in JavaScript, Tailwind CSS, Firebase, and Python. I specialize in creating responsive, user-centric web and application solutions, blending functionality with aesthetics to deliver impactful results and exceed expectations in web development and data analytics.",
   "skills": [
     {
-      "name": "MongoDB"
+      "name": "MongoDB",
+      "rating": 80
     },
     {
-      "name": "Express"
+      "name": "Express",
+      "rating": 80
     },
     {
-      "name": "React"
+      "name": "React",
+      "rating": 90
     },
     {
-      "name": "NodeJs"
+      "name": "NodeJs",
+      "rating": 80
     },
     {
-      "name": "Python"
+      "name": "Python",
+      "rating": 90
     },
     {
-      "name": "Autocad"
+      "name": "Autocad",
+      "rating": 50
     },
     {
-      "name": "Figma"
+      "name": "Figma",
+      "rating": 70
     },
     {
-      "name": "Pandas"
+      "name": "Pandas",
+      "rating": 70
     },
     {
-      "name": "Android"
+      "name": "Android",
+      "rating": 75
     },
     {
-      "name": "Expo"
+      "name": "Expo",
+      "rating": 75
     },
     {
-      "name": "Firebase"
+      "name": "Firebase",
+      "rating": 80
     },
     {
-      "name": "Blender"
-    }
-  ],
-  "proficiency": [
-    {
-      "label": "HTML • CSS",
-      "value": 90
-    },
-    {
-      "label": "REACT JS",
-      "value": 90
-    },
-    {
-      "label": "MICROSOFT DATA TOOLS",
-      "value": 70
-    },
-    {
-      "label": "DATABASE • MYSQL • FIREBASE",
-      "value": 80
-    },
-    {
-      "label": "MACHINE LEARNING",
-      "value": 90
-    },
-    {
-      "label": "AI • PROMPT",
-      "value": 90
-    },
-    {
-      "label": "PYTHON",
-      "value": 90
-    },
-    {
-      "label": "JAVA • C# • C++",
-      "value": 75
-    },
-    {
-      "label": "GITHUB",
-      "value": 90
-    },
-    {
-      "label": "VERCEL",
-      "value": 90
-    },
-    {
-      "label": "BLENDER",
-      "value": 60
-    },
-    {
-      "label": "AUTOCAD",
-      "value": 50
-    },
-    {
-      "label": "REACT NATIVE",
-      "value": 75
-    },
-    {
-      "label": "FLUTTER",
-      "value": 70
+      "name": "Blender",
+      "rating": 60
     }
   ],
   "marquee": [
@@ -213,6 +168,30 @@
       ],
       "liveUrl": "https://arbitragedev.netlify.app",
       "sourceUrl": "https://github.com/Gokul1734/Arbitrage",
+      "showGames": false
+    },
+    {
+      "id": "project-f234c891-3712-4768-809a-10ffa32a865d",
+      "title": "Personal Finance & Habit Tracker",
+      "description": "Track monthly expenses, visualize spending trends and build better financial habits through streaks and rewards. Plan EMIs, investments and monthly budgets with a smarter approach to managing money.",
+      "image": "/uploads/53aba419-6d2c-4888-b545-773a53dec605.png",
+      "technologies": [
+        "Lovable"
+      ],
+      "liveUrl": "https://expense-meter.lovable.app/",
+      "sourceUrl": "https://github.com/Gokul1734/expense-meter",
+      "showGames": false
+    },
+    {
+      "id": "project-f9fee6c7-8ad6-4d6a-9d30-0d04da724a6d",
+      "title": "Clustrix — Smart Bike Cluster Dashboard",
+      "description": "Transform your smartphone into a smart bike dashboard with real-time speed, GPS navigation, live weather and clock information. Track travel distance, trip meter and ride details through a clean, rider-focused interface.",
+      "image": "/uploads/e92fd572-c1b3-4960-929e-f3c84e07d218.png",
+      "technologies": [
+        "Lovable"
+      ],
+      "liveUrl": "https://clustrix.lovable.app",
+      "sourceUrl": "https://github.com/Gokul1734/vibe-rider",
       "showGames": false
     }
   ],
