@@ -1,9 +1,12 @@
-import React from "react";
-
-const GameComponent = (props) => {
+const GameComponent = ({ title, url }) => {
   return (
-    <div className="gametab bg-transparent m-10 ">
-      <iframe className="w-full h-full" src={props.url}></iframe>
+    <div className="gametab">
+      <iframe
+        title={title}
+        src={url}
+        allow="fullscreen"
+        referrerPolicy="strict-origin-when-cross-origin"
+      />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { useMediaQuery } from "react-responsive";
 import { BiUpArrowCircle } from "react-icons/bi";
@@ -48,6 +48,8 @@ function App() {
   const openHome = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const closeGamePopup = useCallback(() => setShowPopup(false), []);
 
   return (
     <>
@@ -120,9 +122,7 @@ function App() {
               ))}
             </div>
           </div>
-          {showPopup && (
-            <Popup status={[showPopup, setShowPopup]} />
-          )}
+          {showPopup && <Popup onClose={closeGamePopup} />}
           <h1 id="education" className="title section-title">
             {portfolio.sectionTitles.education}
           </h1>
