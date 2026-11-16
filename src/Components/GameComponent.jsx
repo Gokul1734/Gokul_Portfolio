@@ -1,3 +1,4 @@
+// eslint-disable-next-line react/prop-types
 const GameComponent = ({ title, url }) => {
   return (
     <div className="gametab">
