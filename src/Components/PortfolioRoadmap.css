@@ -1,0 +1,212 @@
+.portfolio-roadmap {
+  display: none;
+}
+
+@media (min-width: 1000px) {
+  .portfolio {
+    padding-left: clamp(68px, 8vw, 94px);
+  }
+
+  .portfolio-roadmap {
+    position: fixed;
+    z-index: 20;
+    top: 50%;
+    left: 12px;
+    display: flex;
+    width: 42px;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 8px;
+    transform: translateY(-50%);
+    border: 1px solid rgba(195, 245, 106, 0.16);
+    border-radius: 22px;
+    color: #eef0e9;
+    background: rgba(13, 16, 20, 0.86);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.34);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+  }
+
+  .roadmap-heading,
+  .roadmap-current,
+  .roadmap-stop-label,
+  .roadmap-next-label {
+    display: none;
+  }
+
+  .roadmap-track {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: clamp(176px, 30vh, 252px);
+    isolation: isolate;
+  }
+
+  .roadmap-rail,
+  .roadmap-rail-progress {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    border-radius: 999px;
+    transform: translateX(-50%);
+  }
+
+  .roadmap-rail {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .roadmap-rail-progress {
+    transform: translateX(-50%) scaleY(0);
+    transform-origin: top;
+    background: linear-gradient(#c3f56a, #a4d64d);
+    box-shadow: 0 0 12px rgba(195, 245, 106, 0.46);
+  }
+
+  .roadmap-stop {
+    position: absolute;
+    left: 50%;
+    display: flex;
+    width: 25px;
+    min-height: 29px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transform: translate(-50%, -50%);
+    border: 0;
+    color: #9299a4;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .roadmap-stop-marker {
+    display: grid;
+    width: 22px;
+    height: 22px;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: inherit;
+    background: #171a20;
+    font-size: 7px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    transition:
+      color 180ms ease,
+      border-color 180ms ease,
+      background 180ms ease,
+      box-shadow 180ms ease,
+      transform 180ms ease;
+  }
+
+  .roadmap-stop:hover .roadmap-stop-marker {
+    transform: scale(1.12);
+    border-color: rgba(195, 245, 106, 0.62);
+    color: #d7ff9a;
+  }
+
+  .roadmap-stop.is-active .roadmap-stop-marker {
+    border-color: #c3f56a;
+    color: #10140c;
+    background: #c3f56a;
+    box-shadow: 0 0 0 5px rgba(195, 245, 106, 0.12);
+  }
+
+  .roadmap-cursor {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    border: 2px solid #e6ffc0;
+    border-radius: 50%;
+    background: #c3f56a;
+    box-shadow: 0 0 13px rgba(195, 245, 106, 0.95);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+  }
+
+  .roadmap-next-button {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    flex: 0 0 auto;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(195, 245, 106, 0.34);
+    border-radius: 50%;
+    color: #13170c;
+    background: #c3f56a;
+    box-shadow: 0 0 18px rgba(195, 245, 106, 0.14);
+    cursor: pointer;
+    transition:
+      transform 180ms ease,
+      background 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .roadmap-next-button:hover {
+    transform: translateY(2px);
+    background: #d6ff96;
+    box-shadow: 0 0 24px rgba(195, 245, 106, 0.32);
+  }
+
+  .roadmap-next-button:active {
+    transform: scale(0.92);
+  }
+
+  .roadmap-next-arrow {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .roadmap-stop:focus-visible,
+  .roadmap-next-button:focus-visible {
+    outline: 2px solid #e3ffb5;
+    outline-offset: 3px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .portfolio-roadmap {
+    left: max(18px, calc((100vw - 1500px) / 2 + 20px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roadmap-stop-marker,
+  .roadmap-next-button {
+    transition: none;
+  }
+}
+
+.logo-button h1 {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  text-align: center;
+  transform: translateY(1px);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+#home,
+#skills,
+#projects,
+#education,
+#contact {
+  scroll-margin-top: 28px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
