@@ -22,7 +22,7 @@
       "linkedin": "https://www.linkedin.com/in/gokulpriyan-karthikeyan-078652200/"
     }
   },
-  "testimonial": "I am a Computer Science and Engineering graduate from SRM University with expertise in JavaScript, Tailwind CSS, Firebase, and Python. I specialize in creating responsive, user-centric web and application solutions, blending functionality with aesthetics to deliver impactful results and exceed expectations in web development and data analytics.",
+  "testimonial": "I am a Computer Science and Engineering graduate from SRM University and a Full-Stack Software Engineer with nearly 2 years of combined internship and professional experience. I work with Python, Django, React, and React Native to build enterprise applications and mobile solutions. My interests include backend engineering, application architecture, CI/CD, production deployments, and AI-assisted development automation using Claude Code and MCP servers. I enjoy building practical solutions that solve real-world problems and improve everyday workflows.",
   "skills": [
     {
       "name": "MongoDB",
@@ -196,7 +196,7 @@
     }
   ],
   "education": {
-    "internship": "Since 2025, I’ve interned at Technobite and worked as a freelance app developer, gaining hands-on experience in building scalable applications. Daily Scrum calls improved my agile collaboration and communication skills, while working with professionals sharpened my technical abilities and helped me deliver impactful, user-focused solutions efficiently.",
+    "internship": "I started my professional journey at Techobite, where I developed cross-platform applications and a school administration dashboard with 100+ features. Later, at Victopia Labs, I worked on a mobile learning platform, developing 50+ features using React Native, Expo, Django, and PostgreSQL. I gained hands-on experience in application architecture, offline support, cloud integrations, CI/CD, app store releases, and AI-assisted development workflows.",
     "university": {
       "title": "SRM University",
       "cgpa": "9.44",
